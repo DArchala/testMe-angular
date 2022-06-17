@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {UserService} from "../../services/user.service";
+import {UserAuthService} from "../../services/user-auth.service";
 
 @Component({
   selector: 'app-activate-account',
@@ -9,9 +9,9 @@ import {UserService} from "../../services/user.service";
 })
 export class ActivateAccountComponent {
 
-  constructor(private route: ActivatedRoute, private userService: UserService) {
+  constructor(private route: ActivatedRoute, private userAuthService: UserAuthService) {
     this.token = this.route.snapshot.paramMap.get('token');
-    this.userService.confirmAccountActivationByToken(this.token).subscribe(
+    this.userAuthService.confirmAccountActivationByToken(this.token).subscribe(
       () => {
       }, error => {
         switch (error.status) {

@@ -31,19 +31,19 @@ export class ExamComponent {
   constructor(private examService: ExamsService, private router: Router,
               private route: ActivatedRoute, private dialogService: DialogService) {
     this.examId = this.route.snapshot.paramMap.get('id');
-    this.examService.getExamById(this.examId).subscribe(data => {
+    this.examService.getExamByIdToTake(this.examId).subscribe(data => {
       this.exam = data;
       this.maxExamTime = data.timeInSeconds;
       this.examTimeLeft = data.timeInSeconds;
     }, error => {
-      if(error.status === 404) this.router.navigate(['exams']);
+      if (error.status === 404) this.router.navigate(['exams']);
     });
     this.examService.postExamGetMaxPoints(this.examId).subscribe(data => this.examMaxPoints = data);
   }
 
 
   startTest() {
-    this.examService.getExamById(this.examId).subscribe(data => this.exam = data);
+    this.examService.getExamByIdToTake(this.examId).subscribe(data => this.exam = data);
     this.examDateTime.startDateTime = new Date();
     this.examStarted = true;
     this.startTimer();
@@ -67,14 +67,19 @@ export class ExamComponent {
     this.examForm.exam = this.exam;
     this.examForm.examDateTime = this.examDateTime;
     this.examForm.examDateTime.userExamTime = this.userLastExamTime;
-    this.examService.postExamToCheckCorrectness(this.examForm).subscribe(data => this.responseExamPoints = data);
+    this.examService.postExamToCheckCorrectness(this.examForm).subscribe(
+      data => {
+        this.responseExamPoints = data
+      }, error => {
+        alert(error.error.text);
+      });
     alert("Exam ended!");
     this.examStarted = false;
-    this.examService.getExamById(this.examId).subscribe(data => this.examTimeLeft = data.timeInSeconds);
+    this.examService.getExamByIdToTake(this.examId).subscribe(data => this.examTimeLeft = data.timeInSeconds);
   }
 
   selectAnswer(answer: Answer, question: Question) {
-    if(question.type === 'single') {
+    if (question.type === 'single') {
       question.answers.filter(a => a.id != answer.id).forEach(answer => answer.correctness = false);
     }
   }

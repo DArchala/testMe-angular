@@ -19,7 +19,7 @@ export class EditExamComponent {
               private route: ActivatedRoute) {
     this.examId = this.route.snapshot.paramMap.get('id');
     this.examService.getNewExamData().subscribe(data => this.difficultyLevels = data);
-    this.examService.getExamToEditById(this.examId).subscribe(data => {
+    this.examService.getExamById(this.examId).subscribe(data => {
       this.examModel.id = this.examId;
       this.examNameControl.patchValue(data.examName);
       this.difficultyLevelControl.patchValue(data.difficultyLevel);

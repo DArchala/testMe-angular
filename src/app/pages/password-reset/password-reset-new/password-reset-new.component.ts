@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {User} from "../../../models/user";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {InfoStatic} from "../../../support/info-static";
+import {UserAuthService} from "../../../services/user-auth.service";
 
 @Component({
   selector: 'app-password-reset-new',
@@ -12,10 +13,10 @@ import {InfoStatic} from "../../../support/info-static";
 })
 export class PasswordResetNewComponent {
 
-  constructor(private userService: UserService, private route: ActivatedRoute,
+  constructor(private userAuthService: UserAuthService, private userService: UserService, private route: ActivatedRoute,
               private router: Router) {
     this.tokenValue = this.route.snapshot.paramMap.get('token');
-    this.userService.confirmResetPasswordByToken(this.tokenValue).subscribe(
+    this.userAuthService.confirmResetPasswordByToken(this.tokenValue).subscribe(
       next => {
         this.user = next;
         console.log(this.user);

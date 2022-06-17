@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {User} from "../../models/user";
-import {UserService} from "../../services/user.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpErrorResponse} from "@angular/common/http";
 import {InfoStatic} from "../../support/info-static";
+import {UserAuthService} from "../../services/user-auth.service";
 
 @Component({
   selector: 'app-register',
@@ -12,7 +12,7 @@ import {InfoStatic} from "../../support/info-static";
 })
 export class RegisterComponent {
 
-  constructor(private userService: UserService) {
+  constructor(private userAuthService: UserAuthService) {
   }
 
   userModel = new User();
@@ -56,7 +56,7 @@ export class RegisterComponent {
       this.userModel.username = this.usernameControl.value;
       this.userModel.email = this.emailControl.value;
       this.userModel.password = this.passwordControl.value;
-      this.userService.registerNewUser(this.userModel).subscribe(
+      this.userAuthService.registerNewUser(this.userModel).subscribe(
         () => {
         }, (error: HttpErrorResponse) => {
           this.turnSpinnerOn = false;
