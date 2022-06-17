@@ -23,27 +23,15 @@ export class UserService {
   }
 
   putUserWithNewRole(user: User) {
-    return this.httpClient.put<User>(this.url + `/update/role`, user).pipe(tap(console.log));
+    return this.httpClient.put<User>(this.url + `/role`, user).pipe(tap(console.log));
   }
 
   putUserWithNewPassword(user: User) {
-    return this.httpClient.put<User>(this.url + `/update/password`, user).pipe(tap(console.log));
+    return this.httpClient.put<User>(this.url + `/password`, user).pipe(tap(console.log));
   }
 
   deleteUser(userID: any) {
     return this.httpClient.delete<any>(this.url + `/delete/` + userID).pipe(tap(console.log));
-  }
-
-  registerNewUser(user: User) {
-    return this.httpClient.post<User>(this.url + `/register`, user).pipe(tap(console.log));
-  }
-
-  confirmAccountActivationByToken(tokenValue: string) {
-    return this.httpClient.get<HttpResponse<any>>(this.url + `/activateAccount/token?value=` + tokenValue).pipe(tap(console.log));
-  }
-
-  confirmResetPasswordByToken(tokenValue: string) {
-    return this.httpClient.get<any>(this.url + `/passwordReset/token?value=` + tokenValue).pipe(tap(console.log));
   }
 
   getRoles() {
@@ -51,10 +39,6 @@ export class UserService {
   }
 
   postPasswordChangeRequest(passwordRequest: PasswordChangeRequest) {
-    return this.httpClient.post<User>(this.url + `/changeMyPassword`, passwordRequest).pipe(tap(console.log));
-  }
-
-  postPasswordResetEmailRequest(email: string) {
-    return this.httpClient.post<any>(this.url + `/passwordResetRequest`, email).pipe(tap(console.log));
+    return this.httpClient.post<User>(this.url + `/password/change`, passwordRequest).pipe(tap(console.log));
   }
 }

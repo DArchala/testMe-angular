@@ -13,25 +13,29 @@ import {ExamForm} from "../models/exam-form";
 })
 export class ExamsService {
 
-  private url = "http://localhost:8080/api";
+  private url = "http://localhost:8080/api/exams";
 
   constructor(private httpClient: HttpClient) {
   }
 
   getExams() {
-    return this.httpClient.get<Exam[]>(this.url + `/exams`);
+    return this.httpClient.get<Exam[]>(this.url);
   }
 
   getExamById(examId: string | any) {
-    return this.httpClient.get<Exam>(this.url + `/exams/exam/` + examId).pipe(tap(console.log));
+    return this.httpClient.get<Exam>(this.url + `/exam/` + examId).pipe(tap(console.log));
+  }
+
+  getExamByIdToTake(examId: string | any) {
+    return this.httpClient.get<Exam>(this.url + `/exam/take/` + examId).pipe(tap(console.log));
   }
 
   postExamToCheckCorrectness(examForm: ExamForm) {
-    return this.httpClient.post<Exam>(this.url + `/exams/exam`, examForm).pipe(tap(console.log));
+    return this.httpClient.post<Exam>(this.url + `/exam`, examForm).pipe(tap(console.log));
   }
 
   postExamGetMaxPoints(examId: string | any) {
-    return this.httpClient.post<number>(this.url + `/exams/exam/` + examId, null).pipe(tap(console.log));
+    return this.httpClient.post<number>(this.url + `/exam/max-points`, examId).pipe(tap(console.log));
   }
 
   getNewExamData() {
@@ -42,16 +46,12 @@ export class ExamsService {
     return this.httpClient.post<Exam>(this.url + `/new-exam/save`, exam).pipe(tap(console.log));
   }
 
-  getExamToEditById(examId: string | any) {
-    return this.httpClient.get<Exam>(this.url + `/exams/edit/` + examId).pipe(tap(console.log));
-  }
-
   putExam(exam: Exam) {
-    return this.httpClient.put<Exam>(this.url + `/exams/edit`, exam).pipe(tap(console.log));
+    return this.httpClient.put<Exam>(this.url + `/edit`, exam).pipe(tap(console.log));
   }
 
   deleteExam(examId: any) {
-    return this.httpClient.delete<any>(this.url + `/exams/delete/` + examId).pipe(tap(console.log));
+    return this.httpClient.delete<any>(this.url + `/delete/` + examId).pipe(tap(console.log));
   }
 
   getNewQuestion(questionType: string) {
