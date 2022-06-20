@@ -38,7 +38,7 @@ export class ExamComponent {
     }, error => {
       if (error.status === 404) this.router.navigate(['exams']);
     });
-    this.examService.postExamGetMaxPoints(this.examId).subscribe(data => this.examMaxPoints = data);
+    this.examService.getExamMaxPoints(this.examId).subscribe(data => this.examMaxPoints = data);
   }
 
 
