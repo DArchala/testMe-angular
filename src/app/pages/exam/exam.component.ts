@@ -33,6 +33,7 @@ export class ExamComponent {
     this.examId = this.route.snapshot.paramMap.get('id');
     this.examService.getExamByIdToTake(this.examId).subscribe(data => {
       this.exam = data;
+      this.exam.questions = [];
       this.maxExamTime = data.timeInSeconds;
       this.examTimeLeft = data.timeInSeconds;
     }, error => {
@@ -41,9 +42,17 @@ export class ExamComponent {
     this.examService.getExamMaxPoints(this.examId).subscribe(data => this.examMaxPoints = data);
   }
 
+  shuffle(q: Question[]) {
+    for (let i = q.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [q[i], q[j]] = [q[j], q[i]];
+    }
+    return q;
+  }
 
   startTest() {
     this.examService.getExamByIdToTake(this.examId).subscribe(data => this.exam = data);
+    this.examService.getExamByIdToTake(this.examId).subscribe(data => this.exam.questions = this.shuffle(data.questions));
     this.examDateTime.startDateTime = new Date();
     this.examStarted = true;
     this.startTimer();
